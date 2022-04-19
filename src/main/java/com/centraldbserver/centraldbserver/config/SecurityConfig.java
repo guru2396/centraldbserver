@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.cors().and()
                 .csrf().disable()
-                .authorizeRequests().antMatchers("/register-patient","/login-patient").permitAll()
+                .authorizeRequests().antMatchers("/patientapp-authenticate","/hospitalapp-authenticate").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity webSecurity) throws Exception{
-        webSecurity.ignoring().antMatchers("/register-patient","/login-patient");
+        webSecurity.ignoring().antMatchers("/patientapp-authenticate","/hospitalapp-authenticate");
     }
 
     @Bean

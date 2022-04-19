@@ -23,6 +23,7 @@ public class CentralServerService {
 
     @Autowired
     private Consent_request_repo consent_request_repo;
+
     @Autowired
     private Doctor_info_repo doctor_info_repo;
 
@@ -36,26 +37,8 @@ public class CentralServerService {
     private Patient_Hospital_mapping_repo patient_hospital_mapping_repo;
 
     @Autowired
-    private Environment environment;
-
-    @Autowired
     private Ehr_info_repo ehr_info_repo;
 
-    @Autowired
-    private JwtService jwtService;
-
-    @Value("${consentManager.url}")
-    private String consentManagerBaseUrl;
-
-    @Value("${consentmanager.client.id}")
-    private String consentManagerClientId;
-
-    @Value("${consentmanager.client.secret}")
-    private String consentManagerClientSecret;
-
-    private String consentToken;
-
-    private Map<String,String> tokenMap=new HashMap<>();
 
     //private PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
 
@@ -79,7 +62,7 @@ public class CentralServerService {
             patient_info.setPatient_govtid(patientRegistrationDto.getPatient_govtid());
 
            // String hash_password = passwordEncoder.encode(patientRegistrationDto.getPatient_password());
-            patient_info.setPatient_password(patientRegistrationDto.getPatient_password()); //saving hashed password in database;
+             //saving hashed password in database;
 
             //patient_info.setPatient_password(patientRegistrationDto.getPatient_password());
 
@@ -161,5 +144,68 @@ public class CentralServerService {
         }
     }
 
+    public String addDoctor(String email){
+        Doctor_info doctor_info=doctor_info_repo.getDoctorByEmail(email);
+        if(doctor_info==null){
+            Doctor_info doctor=new Doctor_info();
+            doctor.setDoctor_email(email);
+            long id=generateID();
+            String doctorId="DOC_" + id;
+            doctor.setDoctor_id(doctorId);
+            doctor_info_repo.save(doctor);
+            return doctorId;
+        }
+        return doctor_info.getDoctor_id();
+    }
+
+    public String registerDoctor(DoctorRegistrationDto doctorRegistrationDto){
+        Doctor_info doctor_info=doctor_info_repo.getDoctorById(doctorRegistrationDto.getDoctor_id());
+        if(doctor_info!=null){
+            doctor_info.setDoctor_name(doctorRegistrationDto.getDoctor_name());
+            doctor_info.setDoctor_contact(doctorRegistrationDto.getDoctor_contact());
+            doctor_info.setDoctor_speciality(doctorRegistrationDto.getDoctor_speciality());
+            doctor_info_repo.save(doctor_info);
+            return "Success";
+        }
+        return null;
+    }
+
+    public Doctor_info getDoctorById(String doctorId){
+        return doctor_info_repo.getDoctorById(doctorId);
+    }
+
+    public Patient_info getPatientById(String patientId){
+        return patient_info_repo.getPatientById(patientId);
+    }
+
+    public String getEhrByPatientId(String patientId){
+        String ehrId=ehr_info_repo.getEhrIdByPatientId(patientId);
+        if(ehrId==null){
+            Ehr_info ehr_info=new Ehr_info();
+            ehr_info.setPatient_id(patientId);
+            long id=generateID();
+            ehrId="EHR_" + id;
+            ehr_info.setEhr_id(ehrId);
+            ehr_info.setCreated_dt(new Date());
+            ehr_info_repo.save(ehr_info);
+            return ehrId;
+        }
+        return ehrId ;
+    }
+
+    public Consent_request getConsentRequestById(String id){
+        return consent_request_repo.getConsentRequestById(id);
+    }
+
+    public String updateConsentRequest(String id){
+        Consent_request consent_request=getConsentRequestById(id);
+        consent_request.setRequest_status("Completed");
+        consent_request_repo.save(consent_request);
+        return "Success";
+    }
+
+    public Hospital_info getHospitalById(String id){
+        return hospital_info_repo.getHospitalById(id);
+    }
 
 }

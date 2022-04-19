@@ -16,13 +16,10 @@ public class Doctor_info {
 
     private String doctor_name;
 
-    private String hospital_id;
-
     private String doctor_email;
 
     private String doctor_contact;
 
     private String doctor_speciality;
 
-    private String doctor_password;
 }

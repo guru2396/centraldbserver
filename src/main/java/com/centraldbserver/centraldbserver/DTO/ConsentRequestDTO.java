@@ -10,6 +10,4 @@ public class ConsentRequestDTO {
 
     private String access_purpose;
 
-    private String doctor_id;
-
 }

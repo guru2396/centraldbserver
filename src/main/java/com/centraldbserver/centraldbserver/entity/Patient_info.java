@@ -46,7 +46,4 @@ public class Patient_info {
     @Column(name="patient_govtid")
     private String patient_govtid;
 
-    @Column(name="patient_password")
-    private String patient_password;
-
 }
