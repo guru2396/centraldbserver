@@ -46,7 +46,7 @@ public class CentralServerController {
     @GetMapping(value="/get-consent-notifications/{patientId}")
     public ResponseEntity<?> getConsentRequests(@PathVariable("patientId") String patientId){
         //tring patientId=jwtService.extractID(token);
-       // System.out.print(token);
+        System.out.print(patientId);
         List<ConsentNotificationResponse> consentrequests= centralServerService.getConsentRequests(patientId);
         return ResponseEntity.ok(consentrequests);
     }

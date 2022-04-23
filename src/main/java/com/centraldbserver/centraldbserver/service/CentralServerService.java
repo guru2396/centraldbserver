@@ -103,6 +103,7 @@ public class CentralServerService {
 
     public List<ConsentNotificationResponse> getConsentRequests(String patientId){
         List<Consent_request> consentReqList=consent_request_repo.getConsentRequestsForPatient(patientId);
+        System.out.println(consentReqList.size());
         List<ConsentNotificationResponse> consentRepList=new ArrayList<>();
         if(consentReqList!=null){
             for(Consent_request consent_request:consentReqList){
