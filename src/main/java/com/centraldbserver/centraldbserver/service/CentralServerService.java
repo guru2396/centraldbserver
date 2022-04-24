@@ -81,6 +81,10 @@ public class CentralServerService {
     }
 
     public String createConsentRequest(String doctorId,String hospitalId,ConsentRequestDTO consentRequestDTO){
+        Patient_info patient_info=getPatientById(consentRequestDTO.getPatient_id());
+        if(patient_info==null){
+            return null;
+        }
         Consent_request consent_request=new Consent_request();
         consent_request.setRequest_info(consentRequestDTO.getRequest_info());
         consent_request.setAccess_purpose(consentRequestDTO.getAccess_purpose());
@@ -162,6 +166,9 @@ public class CentralServerService {
     public String registerDoctor(DoctorRegistrationDto doctorRegistrationDto){
         Doctor_info doctor_info=doctor_info_repo.getDoctorById(doctorRegistrationDto.getDoctor_id());
         if(doctor_info!=null){
+            if(!doctor_info.getDoctor_email().equals(doctorRegistrationDto.getDoctor_email())){
+                return null;
+            }
             doctor_info.setDoctor_name(doctorRegistrationDto.getDoctor_name());
             doctor_info.setDoctor_contact(doctorRegistrationDto.getDoctor_contact());
             doctor_info.setDoctor_speciality(doctorRegistrationDto.getDoctor_speciality());
