@@ -22,4 +22,6 @@ public class Doctor_info {
 
     private String doctor_speciality;
 
+    private String is_verified;
+
 }

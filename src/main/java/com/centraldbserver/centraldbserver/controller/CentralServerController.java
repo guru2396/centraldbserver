@@ -147,6 +147,12 @@ public class CentralServerController {
         }
     }
 
+    @PostMapping(value = "/approve-doctor/{doctorId}")
+    public ResponseEntity<?> approveDoctor(@PathVariable("doctorId") String doctorId){
+        String status= centralServerService.approveDoctor(doctorId);
+        return ResponseEntity.ok(status);
+    }
+
 
 
 

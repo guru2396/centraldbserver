@@ -171,6 +171,7 @@ public class CentralServerService {
             }
             doctor_info.setDoctor_name(doctorRegistrationDto.getDoctor_name());
             doctor_info.setDoctor_contact(doctorRegistrationDto.getDoctor_contact());
+            doctor_info.setIs_verified("N");
             doctor_info.setDoctor_speciality(doctorRegistrationDto.getDoctor_speciality());
             doctor_info_repo.save(doctor_info);
             return "Success";
@@ -179,7 +180,7 @@ public class CentralServerService {
     }
 
     public Doctor_info getDoctorById(String doctorId){
-        return doctor_info_repo.getDoctorById(doctorId);
+        return doctor_info_repo.getVerifiedDoctorById(doctorId);
     }
 
     public Patient_info getPatientById(String patientId){
@@ -214,6 +215,13 @@ public class CentralServerService {
 
     public Hospital_info getHospitalById(String id){
         return hospital_info_repo.getHospitalById(id);
+    }
+
+    public String approveDoctor(String doctorId){
+        Doctor_info doctor_info=doctor_info_repo.getUnverifiedDoctor(doctorId);
+        doctor_info.setIs_verified("Y");
+        doctor_info_repo.save(doctor_info);
+        return "Success";
     }
 
 }

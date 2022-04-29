@@ -13,4 +13,10 @@ public interface Doctor_info_repo extends JpaRepository<Doctor_info,String> {
 
     @Query(value = "SELECT * FROM doctor_info WHERE doctor_email=?1",nativeQuery = true)
     Doctor_info getDoctorByEmail(String email);
+
+    @Query(value = "SELECT * FROM doctor_info WHERE doctor_id=?1 and is_verified='N'",nativeQuery = true)
+    Doctor_info getUnverifiedDoctor(String doctorId);
+
+    @Query(value = "SELECT * FROM doctor_info WHERE doctor_id=?1 and is_verified='Y'",nativeQuery = true)
+    Doctor_info getVerifiedDoctorById(String doctorId);
 }
